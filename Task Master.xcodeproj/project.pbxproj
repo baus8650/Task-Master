@@ -50,6 +50,10 @@
 		2214232A28E24604004A8F3D /* Task MasterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Task MasterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2214232E28E24604004A8F3D /* Task_MasterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task_MasterUITests.swift; sourceTree = "<group>"; };
 		2214233028E24604004A8F3D /* Task_MasterUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task_MasterUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2214235228E24EF0004A8F3D /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
+		2214235428E250E3004A8F3D /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		2294E7D028E25698007B34B1 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
+		2294E7D328E25B24007B34B1 /* Folder_TestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder_TestCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +118,9 @@
 		2214232328E24604004A8F3D /* Task MasterTests */ = {
 			isa = PBXGroup;
 			children = (
+				2294E7D228E25AF3007B34B1 /* Folders */,
 				2214232428E24604004A8F3D /* Task_MasterTests.swift */,
+				2294E7D028E25698007B34B1 /* TestCoreDataStack.swift */,
 			);
 			path = "Task MasterTests";
 			sourceTree = "<group>";
@@ -163,10 +169,10 @@
 		2214234728E24B66004A8F3D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2214231B28E24604004A8F3D /* Info.plist */,
 				2214230A28E24603004A8F3D /* AppDelegate.swift */,
 				2214230C28E24603004A8F3D /* SceneDelegate.swift */,
 				2214231628E24604004A8F3D /* Assets.xcassets */,
-				2214231B28E24604004A8F3D /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -174,6 +180,7 @@
 		2214234B28E24CD6004A8F3D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				2214235428E250E3004A8F3D /* CoreDataStack.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -181,6 +188,7 @@
 		2214234D28E24D9C004A8F3D /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				2214235228E24EF0004A8F3D /* FolderViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -215,6 +223,14 @@
 			children = (
 			);
 			path = "Sub Tasks";
+			sourceTree = "<group>";
+		};
+		2294E7D228E25AF3007B34B1 /* Folders */ = {
+			isa = PBXGroup;
+			children = (
+				2294E7D328E25B24007B34B1 /* Folder_TestCase.swift */,
+			);
+			path = Folders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -354,7 +370,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2214230F28E24603004A8F3D /* ViewController.swift in Sources */,
+				2214235328E24EF0004A8F3D /* FolderViewModel.swift in Sources */,
 				2214230B28E24603004A8F3D /* AppDelegate.swift in Sources */,
+				2214235528E250E3004A8F3D /* CoreDataStack.swift in Sources */,
 				2214231528E24603004A8F3D /* Task_Master.xcdatamodeld in Sources */,
 				2214230D28E24603004A8F3D /* SceneDelegate.swift in Sources */,
 			);
@@ -365,6 +383,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2214232528E24604004A8F3D /* Task_MasterTests.swift in Sources */,
+				2294E7D128E25698007B34B1 /* TestCoreDataStack.swift in Sources */,
+				2294E7D428E25B24007B34B1 /* Folder_TestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,7 +547,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 89JNN3239D;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Task Master/Info.plist";
+				INFOPLIST_FILE = "Task Master/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -555,7 +575,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 89JNN3239D;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Task Master/Info.plist";
+				INFOPLIST_FILE = "Task Master/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
