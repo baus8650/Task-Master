@@ -101,12 +101,12 @@
 		2214230928E24603004A8F3D /* Task Master */ = {
 			isa = PBXGroup;
 			children = (
+				2214234728E24B66004A8F3D /* Supporting Files */,
+				2214231328E24603004A8F3D /* Task_Master.xcdatamodeld */,
+				2214234B28E24CD6004A8F3D /* Utilities */,
 				2214234E28E24DA7004A8F3D /* View Controllers */,
 				2214234D28E24D9C004A8F3D /* View Models */,
-				2214234B28E24CD6004A8F3D /* Utilities */,
-				2214234728E24B66004A8F3D /* Supporting Files */,
 				2214233D28E24731004A8F3D /* Views */,
-				2214231328E24603004A8F3D /* Task_Master.xcdatamodeld */,
 			);
 			path = "Task Master";
 			sourceTree = "<group>";
