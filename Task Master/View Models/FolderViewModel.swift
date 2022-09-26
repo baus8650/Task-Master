@@ -10,16 +10,19 @@ import Foundation
 import UIKit
 
 final class FolderViewModel {
+    let managedObjectContext: NSManagedObjectContext
+    let coreDataStack: CoreDataStack
     var folders: [Folder] = []
     
-    init() {
-        getFolders()
+    public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
+        self.managedObjectContext = managedObjectContext
+        self.coreDataStack = coreDataStack
     }
     
     public func getFolders() {
         let folderFetch: NSFetchRequest<Folder> = Folder.fetchRequest()
         do {
-            let results = try CoreDataStack.shared.container.viewContext.fetch(folderFetch)
+            let results = try managedObjectContext.fetch(folderFetch)
             self.folders = results
         } catch let error as NSError {
             print("Fetch error: \(error) description: \(error.userInfo)")
@@ -28,23 +31,16 @@ final class FolderViewModel {
     
     public func addFolder(name: String, image: UIImage) {
         guard let imageData = image.pngData() else { return }
-        let newFolder = Folder(context: CoreDataStack.shared.container.viewContext)
+        let newFolder = Folder(context: managedObjectContext)
         newFolder.name = name
         newFolder.image = imageData
-        do {
-            try CoreDataStack.shared.container.viewContext.save()
-        } catch {
-            print("Unable to save Folder \(error)")
-        }
+        
+        coreDataStack.saveContext(managedObjectContext)
     }
     
     public func deleteFolder(_ folder: Folder) {
-        CoreDataStack.shared.container.viewContext.delete(folder)
-        do {
-            try CoreDataStack.shared.container.viewContext.save()
-        } catch {
-            print("Unable to delete Folder \(error)")
-        }
+        managedObjectContext.delete(folder)
+        coreDataStack.saveContext(managedObjectContext)
     }
     
 }

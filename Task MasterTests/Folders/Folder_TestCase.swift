@@ -10,12 +10,19 @@ import XCTest
 @testable import Task_Master
 
 final class Folder_TestCase: XCTestCase {
+    var folderViewModel: FolderViewModel!
+    var coreDataStack: CoreDataStack!
     
-    private var coreDataStack: TestCoreDataStack!
-
-    override func setUpWithError() throws {
+    override func setUp() {
         super.setUp()
-        coreDataStack = TestCoreDataStack.shared
+        coreDataStack = TestCoreDataStack()
+        folderViewModel = FolderViewModel(managedObjectContext: coreDataStack.mainContext, coreDataStack: coreDataStack)
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        folderViewModel = nil
+        coreDataStack = nil
     }
 
     override func tearDownWithError() throws {
