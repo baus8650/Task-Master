@@ -99,12 +99,8 @@
 		2214230928E24603004A8F3D /* Task Master */ = {
 			isa = PBXGroup;
 			children = (
+				2214234728E24B66004A8F3D /* Supporting Files */,
 				2214233D28E24731004A8F3D /* Views */,
-				2214230A28E24603004A8F3D /* AppDelegate.swift */,
-				2214230C28E24603004A8F3D /* SceneDelegate.swift */,
-				2214231628E24604004A8F3D /* Assets.xcassets */,
-				2214231828E24604004A8F3D /* LaunchScreen.storyboard */,
-				2214231B28E24604004A8F3D /* Info.plist */,
 				2214231328E24603004A8F3D /* Task_Master.xcdatamodeld */,
 			);
 			path = "Task Master";
@@ -130,9 +126,93 @@
 		2214233D28E24731004A8F3D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2214230E28E24603004A8F3D /* ViewController.swift */,
+				2214231828E24604004A8F3D /* LaunchScreen.storyboard */,
+				2214234428E24B35004A8F3D /* Subtasks */,
+				2214234028E24AC4004A8F3D /* Tasks */,
+				2214233E28E24A9D004A8F3D /* Folders */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2214233E28E24A9D004A8F3D /* Folders */ = {
+			isa = PBXGroup;
+			children = (
+				2214234228E24B1F004A8F3D /* View Controllers */,
+				2214233F28E24AAC004A8F3D /* Views */,
+			);
+			path = Folders;
+			sourceTree = "<group>";
+		};
+		2214233F28E24AAC004A8F3D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2214234028E24AC4004A8F3D /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				2214234328E24B2C004A8F3D /* View Controllers */,
+				2214234128E24B0C004A8F3D /* Views */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		2214234128E24B0C004A8F3D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2214234228E24B1F004A8F3D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2214230E28E24603004A8F3D /* ViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		2214234328E24B2C004A8F3D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		2214234428E24B35004A8F3D /* Subtasks */ = {
+			isa = PBXGroup;
+			children = (
+				2214234628E24B4F004A8F3D /* View Controllers */,
+				2214234528E24B4A004A8F3D /* Views */,
+			);
+			path = Subtasks;
+			sourceTree = "<group>";
+		};
+		2214234528E24B4A004A8F3D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2214234628E24B4F004A8F3D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		2214234728E24B66004A8F3D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2214230A28E24603004A8F3D /* AppDelegate.swift */,
+				2214230C28E24603004A8F3D /* SceneDelegate.swift */,
+				2214231628E24604004A8F3D /* Assets.xcassets */,
+				2214231B28E24604004A8F3D /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
