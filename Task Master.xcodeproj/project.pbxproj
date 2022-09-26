@@ -101,6 +101,7 @@
 		2214230928E24603004A8F3D /* Task Master */ = {
 			isa = PBXGroup;
 			children = (
+				2214234B28E24CD6004A8F3D /* Utilities */,
 				2214234728E24B66004A8F3D /* Supporting Files */,
 				2214233D28E24731004A8F3D /* Views */,
 				2214231328E24603004A8F3D /* Task_Master.xcdatamodeld */,
@@ -215,6 +216,13 @@
 				2214231B28E24604004A8F3D /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2214234B28E24CD6004A8F3D /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
