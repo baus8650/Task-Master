@@ -101,6 +101,8 @@
 		2214230928E24603004A8F3D /* Task Master */ = {
 			isa = PBXGroup;
 			children = (
+				2214234E28E24DA7004A8F3D /* View Controllers */,
+				2214234D28E24D9C004A8F3D /* View Models */,
 				2214234B28E24CD6004A8F3D /* Utilities */,
 				2214234728E24B66004A8F3D /* Supporting Files */,
 				2214233D28E24731004A8F3D /* Views */,
@@ -140,71 +142,22 @@
 		2214233E28E24A9D004A8F3D /* Folders */ = {
 			isa = PBXGroup;
 			children = (
-				2214234228E24B1F004A8F3D /* View Controllers */,
-				2214233F28E24AAC004A8F3D /* Views */,
 			);
 			path = Folders;
-			sourceTree = "<group>";
-		};
-		2214233F28E24AAC004A8F3D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		2214234028E24AC4004A8F3D /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
-				2214234328E24B2C004A8F3D /* View Controllers */,
-				2214234128E24B0C004A8F3D /* Views */,
 			);
 			path = Tasks;
-			sourceTree = "<group>";
-		};
-		2214234128E24B0C004A8F3D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2214234228E24B1F004A8F3D /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				2214230E28E24603004A8F3D /* ViewController.swift */,
-			);
-			path = "View Controllers";
-			sourceTree = "<group>";
-		};
-		2214234328E24B2C004A8F3D /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "View Controllers";
 			sourceTree = "<group>";
 		};
 		2214234428E24B35004A8F3D /* Subtasks */ = {
 			isa = PBXGroup;
 			children = (
-				2214234628E24B4F004A8F3D /* View Controllers */,
-				2214234528E24B4A004A8F3D /* Views */,
 			);
 			path = Subtasks;
-			sourceTree = "<group>";
-		};
-		2214234528E24B4A004A8F3D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2214234628E24B4F004A8F3D /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "View Controllers";
 			sourceTree = "<group>";
 		};
 		2214234728E24B66004A8F3D /* Supporting Files */ = {
@@ -223,6 +176,45 @@
 			children = (
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		2214234D28E24D9C004A8F3D /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
+		2214234E28E24DA7004A8F3D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2214235128E24DE4004A8F3D /* Sub Tasks */,
+				2214235028E24DD0004A8F3D /* Main Tasks */,
+				2214234F28E24DB6004A8F3D /* Folders */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		2214234F28E24DB6004A8F3D /* Folders */ = {
+			isa = PBXGroup;
+			children = (
+				2214230E28E24603004A8F3D /* ViewController.swift */,
+			);
+			path = Folders;
+			sourceTree = "<group>";
+		};
+		2214235028E24DD0004A8F3D /* Main Tasks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Main Tasks";
+			sourceTree = "<group>";
+		};
+		2214235128E24DE4004A8F3D /* Sub Tasks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Sub Tasks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
