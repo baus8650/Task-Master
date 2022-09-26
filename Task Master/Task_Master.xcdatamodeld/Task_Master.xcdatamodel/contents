@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="true" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
+        <attribute name="image" optional="YES" attributeType="Transformable"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MainTask" inverseName="parentFolder" inverseEntity="MainTask"/>
+    </entity>
+    <entity name="MainTask" representedClassName="MainTask" syncable="YES" codeGenerationType="class">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateDue" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isShowingSubtasks" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="tasks" inverseEntity="Folder"/>
+        <relationship name="subTasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SubTask" inverseName="parentTask" inverseEntity="SubTask"/>
+    </entity>
+    <entity name="SubTask" representedClassName="SubTask" syncable="YES" codeGenerationType="class">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateDue" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="parentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MainTask" inverseName="subTasks" inverseEntity="MainTask"/>
+    </entity>
 </model>
