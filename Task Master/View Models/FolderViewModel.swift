@@ -7,21 +7,24 @@
 
 import CoreData
 import Foundation
+import Combine
 import UIKit
 
 final class FolderViewModel {
     let managedObjectContext: NSManagedObjectContext
     let coreDataStack: CoreDataStack
-    var folders: [Folder] = []
+    @Published var folders: [Folder] = []
     
     public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
         self.managedObjectContext = managedObjectContext
         self.coreDataStack = coreDataStack
-        folders = getFolders() ?? []
+        self.folders = getFolders() ?? []
     }
     
     public func getFolders() -> [Folder]? {
         let folderFetch: NSFetchRequest<Folder> = Folder.fetchRequest()
+        let sort = NSSortDescriptor(key: "name", ascending: true)
+        folderFetch.sortDescriptors = [sort]
         do {
             let results = try managedObjectContext.fetch(folderFetch)
             return results
@@ -34,10 +37,12 @@ final class FolderViewModel {
     public func addFolder(name: String, image: UIImage) {
         guard let imageData = image.pngData() else { return }
         let newFolder = Folder(context: managedObjectContext)
+        newFolder.id = UUID()
         newFolder.name = name
         newFolder.image = imageData
         
         coreDataStack.saveContext(managedObjectContext)
+        folders = getFolders() ?? []
     }
     
     public func deleteFolder(_ folder: Folder) {
