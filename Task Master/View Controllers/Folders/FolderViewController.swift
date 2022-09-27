@@ -130,7 +130,7 @@ extension FolderViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "folderCell", for: indexPath) as! FolderCollectionViewCell
         cell.folderName.text = folderList[indexPath.row].name
-        let image = UIImage(data: folderList[indexPath.row].image!)
+        let image = UIImage(systemName: folderList[indexPath.row].imageString ?? "list.bullet")
         cell.folderImage.image = image
         cell.deleteButton.tag = indexPath.row
         cell.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)

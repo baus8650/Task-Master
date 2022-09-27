@@ -34,12 +34,12 @@ final class FolderViewModel {
         return nil
     }
     
-    public func addFolder(name: String, image: UIImage) {
-        guard let imageData = image.pngData() else { return }
+    public func addFolder(name: String, imageString: String, colorHexValue: String) {
         let newFolder = Folder(context: managedObjectContext)
         newFolder.id = UUID()
         newFolder.name = name
-        newFolder.image = imageData
+        newFolder.imageString = imageString
+        newFolder.colorHex = colorHexValue
         
         coreDataStack.saveContext(managedObjectContext)
         folders = getFolders() ?? []

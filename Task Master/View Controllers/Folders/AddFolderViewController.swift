@@ -16,8 +16,8 @@ class AddFolderViewController: UIViewController {
     private var viewModel: FolderViewModel!
     
     private var folderName: String?
-    private var folderColor: UIColor?
-    private var folderImage: UIImage?
+    private var folderColor: String?
+    private var folderImage: String?
     
     private var subscriptions = Set<AnyCancellable>()
     
@@ -106,7 +106,7 @@ class AddFolderViewController: UIViewController {
     
     @objc
     private func saveButtonTapped() {
-        viewModel.addFolder(name: folderName ?? "", image: UIImage(systemName: "list.bullet")!)
+        viewModel.addFolder(name: folderName ?? "", imageString: folderImage ?? "list.bullet", colorHexValue: folderColor ?? "9c80b5")
         dismiss(animated: true)
     }
     
