@@ -28,7 +28,6 @@ class FolderViewController: UIViewController {
         let layout = compositionalLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = view.backgroundColor
-//        collectionView.refreshControl = refreshControl
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(FolderCollectionViewCell.self, forCellWithReuseIdentifier: "folderCell")
@@ -67,12 +66,8 @@ class FolderViewController: UIViewController {
     
     @objc
     private func addButtonTapped() {
-        let addFolderVC = AddFolderViewController()
+        let addFolderVC = AddFolderViewController(viewModel: viewModel)
         present(addFolderVC, animated: true)
-//        viewModel.addFolder(name: "Pets", image: UIImage(systemName: "pawprint.fill")!)
-//        viewModel.addFolder(name: "Home", image: UIImage(systemName: "house.fill")!)
-//        viewModel.addFolder(name: "Medicine", image: UIImage(systemName: "pills.fill")!)
-//        viewModel.addFolder(name: "Games", image: UIImage(systemName: "logo.playstation")!)
     }
     
     private func compositionalLayout() -> UICollectionViewLayout {
