@@ -48,6 +48,7 @@ final class FolderViewModel {
     public func deleteFolder(_ folder: Folder) {
         managedObjectContext.delete(folder)
         coreDataStack.saveContext(managedObjectContext)
+        folders = getFolders() ?? []
     }
     
 }
