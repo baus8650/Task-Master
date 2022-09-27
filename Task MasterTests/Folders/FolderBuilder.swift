@@ -12,6 +12,7 @@ import UIKit
 final class FolderBuilder {
     private var name = "Test Folder"
     private var image = UIImage(systemName: "list.bullet")
+    private var mainTasks: [TestMainTask] = [MainTaskBuilder().build()]
     
     func name(_ name: String) -> Self {
         self.name = name
@@ -23,12 +24,18 @@ final class FolderBuilder {
         return self
     }
     
+    func mainTask(_ mainTasks: [TestMainTask]) -> Self {
+        self.mainTasks = mainTasks
+        return self
+    }
+    
     func build() -> TestFolder {
-        return TestFolder(name: name, image: image)
+        return TestFolder(name: name, image: image, mainTasks: mainTasks)
     }
 }
 
 struct TestFolder {
     var name: String
     var image: UIImage?
+    var mainTasks: [TestMainTask]
 }

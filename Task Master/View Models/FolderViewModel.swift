@@ -51,4 +51,23 @@ final class FolderViewModel {
         folders = getFolders() ?? []
     }
     
+    public func addMainTask(name: String, dateDue: Date, isCompleted: Bool, to folder: Folder) {
+        let folderFetch: NSFetchRequest<Folder> = Folder.fetchRequest()
+        folderFetch.predicate = NSPredicate(format: "id == %@", folder.id! as CVarArg)
+        do {
+            let result = try managedObjectContext.fetch(folderFetch)
+            let folder = result.first
+            let newMainTask = MainTask(context: managedObjectContext)
+            newMainTask.id = UUID()
+            newMainTask.name = name
+            newMainTask.dateCreated = Date()
+            newMainTask.dateDue = dateDue
+            newMainTask.isCompleted = isCompleted
+            folder?.addToTasks(newMainTask)
+            coreDataStack.saveContext(managedObjectContext)
+        } catch {
+            print("Could not find folder \(error)")
+        }
+    }
+    
 }

@@ -44,4 +44,20 @@ final class Folder_TestCase: XCTestCase {
         folders = folderViewModel.getFolders()
         XCTAssertEqual(folders?.count, 0)
     }
+    
+    func testAddMainTask() throws {
+        let newFolder = FolderBuilder().build()
+        let newTask = MainTaskBuilder().build()
+        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        let folders = folderViewModel.getFolders()
+        let folder = folders?.first!
+        XCTAssertEqual(folder?.tasks?.count, 0)
+        folderViewModel.addMainTask(name: newTask.name, dateDue: newTask.dateDue, isCompleted: newTask.isCompleted, to: folder!)
+        XCTAssertEqual(folder?.tasks?.count, 1)
+        let secondTask = MainTaskBuilder()
+            .name("Second created test")
+            .build()
+        folderViewModel.addMainTask(name: secondTask.name, dateDue: secondTask.dateDue, isCompleted: secondTask.isCompleted, to: folder!)
+        XCTAssertEqual(folder?.tasks?.count, 2)
+    }
 }
