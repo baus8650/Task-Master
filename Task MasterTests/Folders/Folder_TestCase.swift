@@ -54,5 +54,10 @@ final class Folder_TestCase: XCTestCase {
         XCTAssertEqual(folder?.tasks?.count, 0)
         folderViewModel.addMainTask(name: newTask.name, dateDue: newTask.dateDue, isCompleted: newTask.isCompleted, to: folder!)
         XCTAssertEqual(folder?.tasks?.count, 1)
+        let secondTask = MainTaskBuilder()
+            .name("Second created test")
+            .build()
+        folderViewModel.addMainTask(name: secondTask.name, dateDue: secondTask.dateDue, isCompleted: secondTask.isCompleted, to: folder!)
+        XCTAssertEqual(folder?.tasks?.count, 2)
     }
 }
