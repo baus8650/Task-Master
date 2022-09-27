@@ -23,6 +23,7 @@
 		223822F628E29AB40088FA7D /* FolderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223822F528E29AB40088FA7D /* FolderCollectionViewCell.swift */; };
 		2294E7D128E25698007B34B1 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2294E7D028E25698007B34B1 /* TestCoreDataStack.swift */; };
 		2294E7D428E25B24007B34B1 /* Folder_TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2294E7D328E25B24007B34B1 /* Folder_TestCase.swift */; };
+		22F68CA628E35BCD00E87542 /* MainTaskBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F68CA528E35BCD00E87542 /* MainTaskBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		223822F528E29AB40088FA7D /* FolderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCollectionViewCell.swift; sourceTree = "<group>"; };
 		2294E7D028E25698007B34B1 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		2294E7D328E25B24007B34B1 /* Folder_TestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder_TestCase.swift; sourceTree = "<group>"; };
+		22F68CA528E35BCD00E87542 /* MainTaskBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTaskBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		2214232328E24604004A8F3D /* Task MasterTests */ = {
 			isa = PBXGroup;
 			children = (
+				22F68CA428E35BB400E87542 /* Main Tasks */,
 				2294E7D228E25AF3007B34B1 /* Folders */,
 				2214232428E24604004A8F3D /* Task_MasterTests.swift */,
 				2294E7D028E25698007B34B1 /* TestCoreDataStack.swift */,
@@ -241,6 +244,14 @@
 				223822F228E267970088FA7D /* FolderBuilder.swift */,
 			);
 			path = Folders;
+			sourceTree = "<group>";
+		};
+		22F68CA428E35BB400E87542 /* Main Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				22F68CA528E35BCD00E87542 /* MainTaskBuilder.swift */,
+			);
+			path = "Main Tasks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -397,6 +408,7 @@
 				223822F328E267970088FA7D /* FolderBuilder.swift in Sources */,
 				2294E7D128E25698007B34B1 /* TestCoreDataStack.swift in Sources */,
 				2294E7D428E25B24007B34B1 /* Folder_TestCase.swift in Sources */,
+				22F68CA628E35BCD00E87542 /* MainTaskBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
