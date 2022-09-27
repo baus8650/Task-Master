@@ -114,7 +114,13 @@ class FolderViewController: UIViewController {
     
     @objc
     private func deleteButtonTapped(_ sender: UIButton) {
-        viewModel.deleteFolder(folderList[sender.tag])
+        let ac = UIAlertController(title: "Delete Folder", message: "Are you sure you want to delete this folder? Deleting this folder will also delete all associated tasks. This action cannot be undone.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Cancel", style: .default))
+        ac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.deleteFolder(self.folderList[sender.tag])
+        }))
+        present(ac, animated: true)
     }
 
 }
