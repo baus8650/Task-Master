@@ -111,6 +111,11 @@ class FolderViewController: UIViewController {
         
         return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
     }
+    
+    @objc
+    private func deleteButtonTapped(_ sender: UIButton) {
+        viewModel.deleteFolder(folderList[sender.tag])
+    }
 
 }
 
@@ -124,6 +129,8 @@ extension FolderViewController: UICollectionViewDataSource {
         cell.folderName.text = folderList[indexPath.row].name
         let image = UIImage(data: folderList[indexPath.row].image!)
         cell.folderImage.image = image
+        cell.deleteButton.tag = indexPath.row
+        cell.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         return cell
     }

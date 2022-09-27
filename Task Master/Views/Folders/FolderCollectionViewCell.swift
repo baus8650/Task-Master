@@ -25,6 +25,15 @@ class FolderCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    lazy var deleteButton: UIButton = {
+        let button = UIButton(forAutoLayout: ())
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.autoSetDimensions(to: CGSize(width: 16, height: 16))
+        button.setImage(UIImage(systemName: "x.circle.fill")!.withTintColor(UIColor(red: 1.0, green: 0.43, blue: 0.39, alpha: 1.0), renderingMode: .alwaysOriginal), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        return button
+    }()
+    
     lazy var contentStack: UIStackView = {
         let stackView = UIStackView(forAutoLayout: ())
         stackView.axis = .horizontal
@@ -32,6 +41,7 @@ class FolderCollectionViewCell: UICollectionViewCell {
         stackView.spacing = 16
         stackView.addArrangedSubview(folderImage)
         stackView.addArrangedSubview(folderName)
+        stackView.addArrangedSubview(deleteButton)
         return stackView
     }()
     
