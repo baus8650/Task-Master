@@ -6,22 +6,27 @@
 //
 
 import CoreData
-import XCTest
+import Task_Master
 
-final class TestCoreDataStack {
-    static let shared = TestCoreDataStack()
-    let container: NSPersistentContainer
-    
-    private init() {
+class TestCoreDataStack: CoreDataStack {
+    override init() {
+        super.init()
+        
         let persistentStoreDescription = NSPersistentStoreDescription()
         persistentStoreDescription.type = NSInMemoryStoreType
         
-        self.container = NSPersistentContainer(name: "Task_Master")
-        self.container.persistentStoreDescriptions = [persistentStoreDescription]
-        self.container.loadPersistentStores { description, error in
-            if let error = error {
-                fatalError("Failed to load Core Data \(error)")
+        let container = NSPersistentContainer(
+            name: CoreDataStack.modelName,
+            managedObjectModel: CoreDataStack.model)
+        
+        container.persistentStoreDescriptions = [persistentStoreDescription]
+        
+        container.loadPersistentStores { _, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
+        
+        storeContainer = container
     }
 }

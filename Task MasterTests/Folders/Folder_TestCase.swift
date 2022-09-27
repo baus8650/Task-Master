@@ -10,31 +10,38 @@ import XCTest
 @testable import Task_Master
 
 final class Folder_TestCase: XCTestCase {
+    var folderViewModel: FolderViewModel!
+    var coreDataStack: CoreDataStack!
     
-    private var coreDataStack: TestCoreDataStack!
-
-    override func setUpWithError() throws {
+    override func setUp() {
         super.setUp()
-        coreDataStack = TestCoreDataStack.shared
+        coreDataStack = TestCoreDataStack()
+        folderViewModel = FolderViewModel(managedObjectContext: coreDataStack.mainContext, coreDataStack: coreDataStack)
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        folderViewModel = nil
+        coreDataStack = nil
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testAddFolder() throws {
+        let newFolder = FolderBuilder().build()
+        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        let folders = folderViewModel.getFolders()
+        XCTAssertEqual(folders?.count, 1)
+        XCTAssertTrue(folders?.first?.name == "Test Folder")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testDeleteFolder() throws {
+        let newFolder = FolderBuilder().build()
+        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        var folders = folderViewModel.getFolders()
+        XCTAssertEqual(folders?.count, 1)
+        
+        let folder = folders?.first!
+        folderViewModel.deleteFolder(folder!)
+        folders = folderViewModel.getFolders()
+        XCTAssertEqual(folders?.count, 0)
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
