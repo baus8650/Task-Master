@@ -41,7 +41,7 @@ final class MainTaskBuilder {
         return self
     }
     
-    func build() -> TestFolder {
+    func build() -> TestMainTask {
         return TestMainTask(name: name, isCompleted: isCompleted, dateCreated: dateCreated, dateDue: dateDue, id: id)
     }
 }

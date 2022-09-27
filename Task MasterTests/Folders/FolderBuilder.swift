@@ -24,8 +24,9 @@ final class FolderBuilder {
         return self
     }
     
-    func mainTask(_ mainTasks: TestMainTask) -> Self {
-        self.maintasks = mainTasks
+    func mainTask(_ mainTasks: [TestMainTask]) -> Self {
+        self.mainTasks = mainTasks
+        return self
     }
     
     func build() -> TestFolder {

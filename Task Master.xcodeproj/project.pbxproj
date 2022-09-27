@@ -16,7 +16,7 @@
 		2214232528E24604004A8F3D /* Task_MasterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2214232428E24604004A8F3D /* Task_MasterTests.swift */; };
 		2214232F28E24604004A8F3D /* Task_MasterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2214232E28E24604004A8F3D /* Task_MasterUITests.swift */; };
 		2214233128E24604004A8F3D /* Task_MasterUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2214233028E24604004A8F3D /* Task_MasterUITestsLaunchTests.swift */; };
-		2214234A28E24C83004A8F3D /* PureLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 2214234928E24C83004A8F3D /* PureLayout */; };
+		2214234A28E24C83004A8F3D /* PureLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 2214234928E24C83004A8F3D /* PureLayout */; settings = {ATTRIBUTES = (Required, ); }; };
 		2214235528E250E3004A8F3D /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2214235428E250E3004A8F3D /* CoreDataStack.swift */; };
 		223822F128E25FEF0088FA7D /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223822F028E25FEF0088FA7D /* FolderViewModel.swift */; };
 		223822F328E267970088FA7D /* FolderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223822F228E267970088FA7D /* FolderBuilder.swift */; };
@@ -24,6 +24,8 @@
 		2294E7D128E25698007B34B1 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2294E7D028E25698007B34B1 /* TestCoreDataStack.swift */; };
 		2294E7D428E25B24007B34B1 /* Folder_TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2294E7D328E25B24007B34B1 /* Folder_TestCase.swift */; };
 		22F68CA628E35BCD00E87542 /* MainTaskBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F68CA528E35BCD00E87542 /* MainTaskBuilder.swift */; };
+		22F68CA928E3635800E87542 /* PureLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 22F68CA828E3635800E87542 /* PureLayout */; };
+		22F68CAB28E3635D00E87542 /* PureLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 22F68CAA28E3635D00E87542 /* PureLayout */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22F68CA928E3635800E87542 /* PureLayout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22F68CAB28E3635D00E87542 /* PureLayout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +103,7 @@
 				2214232328E24604004A8F3D /* Task MasterTests */,
 				2214232D28E24604004A8F3D /* Task MasterUITests */,
 				2214230828E24603004A8F3D /* Products */,
+				22F68CA728E3635800E87542 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -254,6 +259,13 @@
 			path = "Main Tasks";
 			sourceTree = "<group>";
 		};
+		22F68CA728E3635800E87542 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -291,6 +303,9 @@
 				2214232228E24604004A8F3D /* PBXTargetDependency */,
 			);
 			name = "Task MasterTests";
+			packageProductDependencies = (
+				22F68CA828E3635800E87542 /* PureLayout */,
+			);
 			productName = "Task MasterTests";
 			productReference = 2214232028E24604004A8F3D /* Task MasterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -309,6 +324,9 @@
 				2214232C28E24604004A8F3D /* PBXTargetDependency */,
 			);
 			name = "Task MasterUITests";
+			packageProductDependencies = (
+				22F68CAA28E3635D00E87542 /* PureLayout */,
+			);
 			productName = "Task MasterUITests";
 			productReference = 2214232A28E24604004A8F3D /* Task MasterUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -748,6 +766,16 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		2214234928E24C83004A8F3D /* PureLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2214234828E24C83004A8F3D /* XCRemoteSwiftPackageReference "PureLayout" */;
+			productName = PureLayout;
+		};
+		22F68CA828E3635800E87542 /* PureLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2214234828E24C83004A8F3D /* XCRemoteSwiftPackageReference "PureLayout" */;
+			productName = PureLayout;
+		};
+		22F68CAA28E3635D00E87542 /* PureLayout */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2214234828E24C83004A8F3D /* XCRemoteSwiftPackageReference "PureLayout" */;
 			productName = PureLayout;
