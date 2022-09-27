@@ -5,6 +5,7 @@
 //  Created by Tim Bausch on 9/27/22.
 //
 
+import Combine
 import PureLayout
 import UIKit
 
@@ -12,6 +13,13 @@ class AddFolderViewController: UIViewController {
     
     // MARK: - Properties
     private lazy var viewTitle: String = "Add Folder"
+    private var viewModel: FolderViewModel!
+    
+    private var folderName: String?
+    private var folderColor: UIColor?
+    private var folderImage: UIImage?
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     // MARK: - Views
     
@@ -20,6 +28,7 @@ class AddFolderViewController: UIViewController {
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -28,6 +37,7 @@ class AddFolderViewController: UIViewController {
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.setTitle("  Save", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
+        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -65,7 +75,6 @@ class AddFolderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Background")
-        
         setUpSubviews()
     }
     
@@ -81,8 +90,27 @@ class AddFolderViewController: UIViewController {
         collectionView.autoPinEdges(toSuperviewMarginsExcludingEdge: .top)
     }
     
+    init(viewModel: FolderViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc
+    private func cancelButtonTapped() {
+        dismiss(animated: true)
+    }
+    
+    @objc
+    private func saveButtonTapped() {
+        viewModel.addFolder(name: folderName ?? "", image: UIImage(systemName: "list.bullet")!)
+        dismiss(animated: true)
+    }
+    
     func compositionalLayout() -> UICollectionViewCompositionalLayout {
-        //1
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0))
@@ -126,8 +154,6 @@ class AddFolderViewController: UIViewController {
             }
             
         }
-        
-//        let section = NSCollectionLayoutSection(group: group)
         let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
         return layout
     }
@@ -156,6 +182,11 @@ extension AddFolderViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nameCell", for: indexPath) as! FolderNameCollectionViewCell
+            cell.$name
+                .sink { string in
+                    self.folderName = string ?? ""
+                }
+                .store(in: &subscriptions)
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! FolderColorCollectionViewCell
