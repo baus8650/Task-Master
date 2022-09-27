@@ -67,10 +67,12 @@ class FolderViewController: UIViewController {
     
     @objc
     private func addButtonTapped() {
-        viewModel.addFolder(name: "Pets", image: UIImage(systemName: "pawprint.fill")!)
-        viewModel.addFolder(name: "Home", image: UIImage(systemName: "house.fill")!)
-        viewModel.addFolder(name: "Medicine", image: UIImage(systemName: "pills.fill")!)
-        viewModel.addFolder(name: "Games", image: UIImage(systemName: "logo.playstation")!)
+        let addFolderVC = AddFolderViewController()
+        present(addFolderVC, animated: true)
+//        viewModel.addFolder(name: "Pets", image: UIImage(systemName: "pawprint.fill")!)
+//        viewModel.addFolder(name: "Home", image: UIImage(systemName: "house.fill")!)
+//        viewModel.addFolder(name: "Medicine", image: UIImage(systemName: "pills.fill")!)
+//        viewModel.addFolder(name: "Games", image: UIImage(systemName: "logo.playstation")!)
     }
     
     private func compositionalLayout() -> UICollectionViewLayout {
