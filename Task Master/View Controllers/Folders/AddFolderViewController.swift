@@ -54,8 +54,6 @@ class AddFolderViewController: UIViewController {
         let layout = compositionalLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = view.backgroundColor
-        //        collectionView.refreshControl = refreshControl
-//        collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(FolderColorCollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         collectionView.register(FolderImageCollectionViewCell.self, forCellWithReuseIdentifier: "imageCell")
