@@ -17,16 +17,18 @@ final class FolderViewModel {
     public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
         self.managedObjectContext = managedObjectContext
         self.coreDataStack = coreDataStack
+        folders = getFolders() ?? []
     }
     
-    public func getFolders() {
+    public func getFolders() -> [Folder]? {
         let folderFetch: NSFetchRequest<Folder> = Folder.fetchRequest()
         do {
             let results = try managedObjectContext.fetch(folderFetch)
-            self.folders = results
+            return results
         } catch let error as NSError {
             print("Fetch error: \(error) description: \(error.userInfo)")
         }
+        return nil
     }
     
     public func addFolder(name: String, image: UIImage) {
