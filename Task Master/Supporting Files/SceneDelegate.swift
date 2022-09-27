@@ -16,7 +16,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = ViewController()
+        
+        let viewController = FolderViewController()
+        let navigation = UINavigationController(rootViewController: viewController)
+        
+        window.rootViewController = navigation
+        
         self.window = window
         window.makeKeyAndVisible()
     }
