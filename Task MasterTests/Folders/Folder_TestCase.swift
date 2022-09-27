@@ -31,6 +31,17 @@ final class Folder_TestCase: XCTestCase {
         let folders = folderViewModel.getFolders()
         XCTAssertEqual(folders?.count, 1)
         XCTAssertTrue(folders?.first?.name == "Test Folder")
+    }
+    
+    func testDeleteFolder() throws {
+        let newFolder = FolderBuilder().build()
+        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        var folders = folderViewModel.getFolders()
+        XCTAssertEqual(folders?.count, 1)
         
+        let folder = folders?.first!
+        folderViewModel.deleteFolder(folder!)
+        folders = folderViewModel.getFolders()
+        XCTAssertEqual(folders?.count, 0)
     }
 }
