@@ -17,6 +17,18 @@ class FolderViewController: UIViewController {
     private var subscriptions = Set<AnyCancellable>()
     private var folderList: [Folder] = []
     
+    var dataSource: UICollectionViewDiffableDataSource<Section, FolderHierarchy>!
+    
+    enum Section {
+        case main
+    }
+    
+    enum FolderHierarchy: Hashable {
+        case folder(Folder)
+        case task(MainTask)
+    }
+    
+    
     // MARK: - Views
     
     private lazy var addButton: UIBarButtonItem = {
@@ -26,15 +38,18 @@ class FolderViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = compositionalLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = view.backgroundColor
+        var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        layoutConfig.backgroundColor = UIColor(named: "Background")
+        let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: listLayout)
+        collectionView.backgroundColor = UIColor(named: "Background")
+        collectionView.dataSource = dataSource
         collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.register(FolderCollectionViewCell.self, forCellWithReuseIdentifier: "folderCell")
         
         return collectionView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Background")
@@ -45,10 +60,12 @@ class FolderViewController: UIViewController {
         self.coreDataStack = CoreDataStack()
         self.viewModel = FolderViewModel(managedObjectContext: coreDataStack.mainContext, coreDataStack: coreDataStack)
         
+        dataSource = makeDataSource()
         setUpSubviews()
         setupBindings()
+        
     }
-
+    
     // MARK: - Helper Functions
     
     private func setUpSubviews() {
@@ -59,9 +76,88 @@ class FolderViewController: UIViewController {
     private func setupBindings() {
         viewModel.$folders.sink { folders in
             self.folderList = folders
-            self.collectionView.reloadData()
+            self.updateDataSource()
         }
         .store(in: &subscriptions)
+    }
+    
+    private func updateDataSource() {
+        var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<FolderHierarchy>()
+        
+        for folder in folderList{
+            let header = FolderHierarchy.folder(folder)
+            sectionSnapshot.append([header])
+            let allTasks = folder.tasks?.allObjects as? [MainTask]
+            if allTasks?.count ?? 0 > 0 {
+                for task in allTasks! {
+                    sectionSnapshot.append([FolderHierarchy.task(task)], to: header)
+                }
+            }
+        }
+        
+        dataSource.apply(sectionSnapshot, to: .main, animatingDifferences: true, completion: nil)
+    }
+    
+    func makeDataSource() -> UICollectionViewDiffableDataSource<Section, FolderHierarchy> {
+        let folderRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Folder> { cell, indexPath, item in
+            
+            var content = cell.defaultContentConfiguration()
+            content.text = item.name
+            content.image = UIImage(systemName: item.imageString ?? "list.bullet")!.withTintColor(UIColor(hex: item.colorHex!)!, renderingMode: .alwaysOriginal)
+            cell.contentConfiguration = content
+            if item.tasks?.count ?? 0 > 0 {
+                let headerDisclosureOption = UICellAccessory.OutlineDisclosureOptions(style: .header)
+                cell.accessories = [.outlineDisclosure(options:headerDisclosureOption)]
+            }
+        }
+        
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MainTask> { cell, indexPath, item in
+            
+            var content = cell.defaultContentConfiguration()
+            content.text = item.name
+            cell.indentationLevel = 2
+            cell.contentConfiguration = content
+        }
+        
+        return UICollectionViewDiffableDataSource<Section, FolderHierarchy>(
+            collectionView: collectionView,
+            cellProvider: { collectionView, indexPath, item in
+                
+                switch item{
+                case .folder(let folderItem):
+                    /* LEAVING THIS HERE IN CASE I CHANGE MY MIND
+                     
+                     let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "folderCell", for: indexPath) as! FolderCollectionViewCell
+                     cell.folderName.text = folderItem.name
+                     let image = UIImage(systemName: folderItem.imageString ?? "list.bullet")
+                     cell.folderImage.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                     cell.folderImageBackground.backgroundColor = UIColor(hex: folderItem.colorHex ?? "9C80B5")
+                     cell.deleteButton.tag = indexPath.row
+                     cell.deleteButton.addTarget(self, action: #selector(self.deleteButtonTapped), for: .touchUpInside)
+                     if folderItem.tasks?.count != 0 {
+                     cell.hasSubTasks = true
+                     } else {
+                     cell.hasSubTasks = false
+                     }
+                     
+                     */
+                    let cell = collectionView.dequeueConfiguredReusableCell(
+                        using: folderRegistration,
+                        for: indexPath,
+                        item: folderItem)
+                    
+                    return cell
+                    
+                case .task(let taskItem):
+                    
+                    let cell = collectionView.dequeueConfiguredReusableCell(
+                        using: cellRegistration,
+                        for: indexPath,
+                        item: taskItem)
+                    
+                    return cell
+                }
+            })
     }
     
     @objc
@@ -70,43 +166,24 @@ class FolderViewController: UIViewController {
         present(addFolderVC, animated: true)
     }
     
-    private func compositionalLayout() -> UICollectionViewLayout {
-        let insets: CGFloat = 12
-        var itemCount: Int
-        var itemSizeWidthDimension: NSCollectionLayoutDimension
-        var itemSize: NSCollectionLayoutSize
-        var groupSize: NSCollectionLayoutSize
-        let topSpace: CGFloat
-        
-        
-        itemCount = 1
-        itemSizeWidthDimension = .fractionalWidth(1)
-        itemSize = NSCollectionLayoutSize(
-            widthDimension: itemSizeWidthDimension,
-            heightDimension: .absolute(52))
-        groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(96))
-        topSpace = .zero
-        
+    private func compositionalLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1/9))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitem: item,
-            count: itemCount)
-        group.interItemSpacing = .fixed(insets)
-        let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(
-                top: topSpace,
-                leading: insets,
-                bottom: 0,
-                trailing: insets)
-            section.interGroupSpacing = insets
-            return section
-        }
+            count: 1)
+        let section = NSCollectionLayoutSection(group: group)
         
-        return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
     
     @objc
@@ -119,24 +196,7 @@ class FolderViewController: UIViewController {
         }))
         present(ac, animated: true)
     }
-
-}
-
-extension FolderViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        folderList.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "folderCell", for: indexPath) as! FolderCollectionViewCell
-        cell.folderName.text = folderList[indexPath.row].name
-        let image = UIImage(systemName: folderList[indexPath.row].imageString ?? "list.bullet")
-        cell.folderImage.image = image
-        cell.deleteButton.tag = indexPath.row
-        cell.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        
-        return cell
-    }
 }
 
 extension FolderViewController: UICollectionViewDelegate {
