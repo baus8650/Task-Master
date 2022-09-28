@@ -63,7 +63,7 @@ class AddFolderViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = compositionalLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = view.backgroundColor
+        collectionView.backgroundColor = UIColor(named: "Background")
         collectionView.dataSource = self
         collectionView.register(FolderColorCollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         collectionView.register(FolderImageCollectionViewCell.self, forCellWithReuseIdentifier: "imageCell")
@@ -190,6 +190,13 @@ extension AddFolderViewController: UICollectionViewDataSource {
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! FolderColorCollectionViewCell
+            cell.backgroundColor = UIColor(hex: cell.colorList[indexPath.row])
+            cell.colorSelectButton.tag = indexPath.row
+            cell.$color
+                .sink { colorString in
+                    self.folderColor = colorString
+                }
+                .store(in: &subscriptions)
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! FolderImageCollectionViewCell
