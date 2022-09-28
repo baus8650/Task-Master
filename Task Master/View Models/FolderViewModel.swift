@@ -70,4 +70,33 @@ final class FolderViewModel {
         }
     }
     
+    public func addDummyFolderWithTasks() {
+        let newFolder = Folder(context: managedObjectContext)
+        newFolder.id = UUID()
+        newFolder.name = "Test Folder"
+        newFolder.imageString = "list.bullet"
+        newFolder.colorHex = "9420A5"
+        
+        let newTask1 = MainTask(context: managedObjectContext)
+        newTask1.id = UUID()
+        newTask1.name = "Test Subtask 1"
+        newTask1.dateCreated = Date()
+        newTask1.dateDue = Date()
+        newTask1.isCompleted = false
+        newTask1.isShowingSubtasks = false
+        
+        let newTask2 = MainTask(context: managedObjectContext)
+        newTask2.id = UUID()
+        newTask2.name = "Test Subtask 2"
+        newTask2.dateCreated = Date()
+        newTask2.dateDue = Date()
+        newTask2.isCompleted = false
+        newTask2.isShowingSubtasks = false
+        
+        newFolder.tasks = [newTask1, newTask2]
+        
+        coreDataStack.saveContext(managedObjectContext)
+        folders = getFolders() ?? []
+    }
+    
 }
