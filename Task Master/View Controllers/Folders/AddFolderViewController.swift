@@ -210,7 +210,6 @@ extension AddFolderViewController: UICollectionViewDataSource {
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! FolderColorCollectionViewCell
             cell.backgroundColor = UIColor(hex: colorList?[indexPath.row] ?? "F1F1F1")
-            cell.colorSelectButton.tag = indexPath.row
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! FolderImageCollectionViewCell
