@@ -19,6 +19,9 @@ class AddFolderViewController: UIViewController {
     private var folderColor: String?
     private var folderImage: String?
     
+    private var imageList: [String]?
+    private var colorList: [String]?
+    
     private var subscriptions = Set<AnyCancellable>()
     
     // MARK: - Views
@@ -65,6 +68,7 @@ class AddFolderViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor(named: "Background")
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(FolderColorCollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         collectionView.register(FolderImageCollectionViewCell.self, forCellWithReuseIdentifier: "imageCell")
         collectionView.register(FolderNameCollectionViewCell.self, forCellWithReuseIdentifier: "nameCell")
@@ -76,6 +80,7 @@ class AddFolderViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Background")
         setUpSubviews()
+        setUpBindings()
     }
     
     // MARK: - Helper Functions
@@ -88,6 +93,20 @@ class AddFolderViewController: UIViewController {
         titleStack.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12)
         collectionView.autoPinEdge(.top, to: .bottom, of: titleStack, withOffset: 8)
         collectionView.autoPinEdges(toSuperviewMarginsExcludingEdge: .top)
+    }
+    
+    private func setUpBindings() {
+        viewModel.$imageList
+            .sink { imageList in
+                self.imageList = imageList
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.$colorList
+            .sink { colorList in
+                self.colorList = colorList
+            }
+            .store(in: &subscriptions)
     }
     
     init(viewModel: FolderViewModel) {
@@ -166,9 +185,9 @@ extension AddFolderViewController: UICollectionViewDataSource {
         case 0:
             return 1
         case 1:
-            return 12
+            return colorList?.count ?? 0
         case 2:
-            return 72
+            return imageList?.count ?? 0
         default:
             return 0
         }
@@ -190,23 +209,32 @@ extension AddFolderViewController: UICollectionViewDataSource {
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! FolderColorCollectionViewCell
-            cell.backgroundColor = UIColor(hex: cell.colorList[indexPath.row])
+            cell.backgroundColor = UIColor(hex: colorList?[indexPath.row] ?? "F1F1F1")
             cell.colorSelectButton.tag = indexPath.row
-            cell.$color
-                .sink { colorString in
-                    self.folderColor = colorString
-                }
-                .store(in: &subscriptions)
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! FolderImageCollectionViewCell
-            cell.imageView.image = UIImage(systemName: "list.bullet")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            cell.imageView.image = UIImage(systemName: imageList?[indexPath.row] ?? "list.bullet")?.withTintColor(UIColor(hex: folderColor ?? "FFFFFF") ?? .white, renderingMode: .alwaysOriginal)
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! FolderColorCollectionViewCell
             return cell
         }
     }
-    
-    
+}
+
+extension AddFolderViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("TAPPED CELL")
+        switch indexPath.section {
+        case 1:
+            folderColor = colorList?[indexPath.row] ?? "F1F1F1"
+            collectionView.reloadData()
+        case 2:
+            folderImage = imageList?[indexPath.row] ?? "list.bullet"
+            print("TESTING \(folderImage)")
+        default:
+            print("Nothing to do")
+        }
+    }
 }
