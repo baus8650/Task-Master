@@ -15,10 +15,101 @@ final class FolderViewModel {
     let coreDataStack: CoreDataStack
     @Published var folders: [Folder] = []
     
+    @Published var imageList: [String] = []
+    
+    @Published var colorList: [String] = []
+    
     public init(managedObjectContext: NSManagedObjectContext, coreDataStack: CoreDataStack) {
         self.managedObjectContext = managedObjectContext
         self.coreDataStack = coreDataStack
+        setUpLists()
         self.folders = getFolders() ?? []
+    }
+    
+    private func setUpLists() {
+        colorList = [
+            "9C80B5",
+            "8FF570",
+            "FF6459",
+            "FF9A60",
+            "FFF07F",
+            "6CFAFA",
+            "7AB6FF",
+            "C04AFF",
+            "FD8FFF",
+            "B8B8B8",
+            "C99DB4",
+            "FFD1F2"
+        ]
+        
+        imageList = [
+            "scribble",
+            "pencil",
+            "folder.fill",
+            "paperplane.fill",
+            "tray.fill",
+            "doc.fill",
+            "doc.plaintext.fill",
+            "terminal.fill",
+            "books.vertical.fill",
+            "book.closed.fill",
+            "magazine.fill",
+            "bookmark.fill",
+            "graduationcap.fill",
+            "paperclip",
+            "person.fill",
+            "person.2.fill",
+            "person.3.fill",
+            "photo.artframe",
+            "moon.fill",
+            "globe.americas.fill",
+            "globe.europe.africa.fill",
+            "globe.asia.australia.fill",
+            "zzz",
+            "record.circle",
+            "megaphone.fill",
+            "music.quarternote.3",
+            "swift",
+            "loupe",
+            "mic.fill",
+            "heart.fill",
+            "flag.fill",
+            "location.fill",
+            "tag.fill",
+            "tshirt.fill",
+            "eyes.inverse",
+            "flashlight.on.fill",
+            "camera.fill",
+            "message.fill",
+            "phone.fill",
+            "envelope.fill",
+            "metronome.fill",
+            "paintbrush.fill",
+            "wrench.and.screwdriver.fill",
+            "stethoscope",
+            "briefcase.fill",
+            "house.fill",
+            "building.2.fill",
+            "pin.fill",
+            "map.fill",
+            "gift.fill",
+            "tv",
+            "airplane",
+            "guitars.fill",
+            "car.fill",
+            "bicycle",
+            "pills.fill",
+            "cross.fill",
+            "pawprint.fill",
+            "leaf.fill",
+            "photo.fill.on.rectangle.fill",
+            "shield.fill",
+            "cup.and.saucer.fill",
+            "fork.knife",
+            "hourglass",
+            "list.bullet",
+            "questionmark"
+        ]
     }
     
     public func getFolders() -> [Folder]? {

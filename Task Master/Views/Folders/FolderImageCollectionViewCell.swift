@@ -5,18 +5,17 @@
 //  Created by Tim Bausch on 9/27/22.
 //
 
+import Combine
 import PureLayout
 import UIKit
 
 class FolderImageCollectionViewCell: UICollectionViewCell {
-    var image: UIImage!
-    
     lazy var imageView: UIImageView = {
         let imageView = UIImageView(forAutoLayout: ())
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = layer.bounds.width / 2
