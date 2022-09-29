@@ -54,6 +54,7 @@ class FolderViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Background")
         navigationItem.rightBarButtonItem = addButton
+        navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.title = "Folders"
         navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -107,7 +108,18 @@ class FolderViewController: UIViewController {
             cell.contentConfiguration = content
             if item.tasks?.count ?? 0 > 0 {
                 let headerDisclosureOption = UICellAccessory.OutlineDisclosureOptions(style: .header)
-                cell.accessories = [.outlineDisclosure(options:headerDisclosureOption)]
+                cell.accessories = [
+                    .delete(displayed: .whenEditing, actionHandler: {
+                        self.viewModel.deleteFolder(item)
+                    }),
+                    .outlineDisclosure(options:headerDisclosureOption)
+                ]
+            } else {
+                cell.accessories = [
+                    .delete(displayed: .whenEditing, actionHandler: {
+                        self.viewModel.deleteFolder(item)
+                    })
+                ]
             }
         }
         
@@ -200,6 +212,17 @@ class FolderViewController: UIViewController {
 }
 
 extension FolderViewController: UICollectionViewDelegate {
-    
+    override func setEditing(_ editing: Bool, animated: Bool){
+        super.setEditing(editing, animated: animated)
+        
+        if editing {
+            collectionView.isEditing = true
+        } else {
+            collectionView.isEditing = false
+        }
+        
+        self.collectionView.reloadData()
+        
+    }
 }
 
