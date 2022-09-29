@@ -60,7 +60,7 @@ class FolderViewController: UIViewController {
         
         self.coreDataStack = CoreDataStack()
         self.viewModel = FolderViewModel(managedObjectContext: coreDataStack.mainContext, coreDataStack: coreDataStack)
-        
+        view.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 8, bottom: 8, trailing: 8)
         dataSource = makeDataSource()
         setUpSubviews()
         setupBindings()
