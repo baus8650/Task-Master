@@ -11,7 +11,8 @@ import UIKit
 
 final class FolderBuilder {
     private var name = "Test Folder"
-    private var image = UIImage(systemName: "list.bullet")
+    private var image = "list.bullet"
+    private var colorHexValue = "9c80b5"
     private var mainTasks: [TestMainTask] = [MainTaskBuilder().build()]
     
     func name(_ name: String) -> Self {
@@ -19,8 +20,13 @@ final class FolderBuilder {
         return self
     }
     
-    func image(_ image: UIImage) -> Self {
+    func image(_ image: String) -> Self {
         self.image = image
+        return self
+    }
+    
+    func colorHexValue(_ colorHexValue: String) -> Self {
+        self.colorHexValue = colorHexValue
         return self
     }
     
@@ -30,12 +36,13 @@ final class FolderBuilder {
     }
     
     func build() -> TestFolder {
-        return TestFolder(name: name, image: image, mainTasks: mainTasks)
+        return TestFolder(name: name, image: image, colorHexValue: colorHexValue, mainTasks: mainTasks)
     }
 }
 
 struct TestFolder {
     var name: String
-    var image: UIImage?
+    var image: String
+    var colorHexValue: String
     var mainTasks: [TestMainTask]
 }

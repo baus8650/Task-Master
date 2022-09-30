@@ -17,6 +17,18 @@ class FolderViewController: UIViewController {
     private var subscriptions = Set<AnyCancellable>()
     private var folderList: [Folder] = []
     
+    var dataSource: UICollectionViewDiffableDataSource<Section, FolderHierarchy>!
+    
+    enum Section {
+        case main
+    }
+    
+    enum FolderHierarchy: Hashable {
+        case folder(Folder)
+        case task(MainTask)
+    }
+    
+    
     // MARK: - Views
     
     private lazy var addButton: UIBarButtonItem = {
@@ -26,30 +38,35 @@ class FolderViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = compositionalLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = view.backgroundColor
-//        collectionView.refreshControl = refreshControl
+        var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        layoutConfig.backgroundColor = UIColor(named: "Background")
+        let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: listLayout)
+        collectionView.backgroundColor = UIColor(named: "Background")
+        collectionView.dataSource = dataSource
         collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.register(FolderCollectionViewCell.self, forCellWithReuseIdentifier: "folderCell")
         
         return collectionView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Background")
         navigationItem.rightBarButtonItem = addButton
+        navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.title = "Folders"
         navigationController?.navigationBar.prefersLargeTitles = true
         
         self.coreDataStack = CoreDataStack()
         self.viewModel = FolderViewModel(managedObjectContext: coreDataStack.mainContext, coreDataStack: coreDataStack)
-        
+        view.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 8, bottom: 8, trailing: 8)
+        dataSource = makeDataSource()
         setUpSubviews()
         setupBindings()
+        
     }
-
+    
     // MARK: - Helper Functions
     
     private func setUpSubviews() {
@@ -60,56 +77,137 @@ class FolderViewController: UIViewController {
     private func setupBindings() {
         viewModel.$folders.sink { folders in
             self.folderList = folders
-            self.collectionView.reloadData()
+            self.updateDataSource()
         }
         .store(in: &subscriptions)
     }
     
-    @objc
-    private func addButtonTapped() {
-        viewModel.addFolder(name: "Pets", image: UIImage(systemName: "pawprint.fill")!)
-        viewModel.addFolder(name: "Home", image: UIImage(systemName: "house.fill")!)
-        viewModel.addFolder(name: "Medicine", image: UIImage(systemName: "pills.fill")!)
-        viewModel.addFolder(name: "Games", image: UIImage(systemName: "logo.playstation")!)
+    private func updateDataSource() {
+        var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<FolderHierarchy>()
+        
+        for folder in folderList{
+            let header = FolderHierarchy.folder(folder)
+            sectionSnapshot.append([header])
+            let allTasks = folder.tasks?.allObjects as? [MainTask]
+            if allTasks?.count ?? 0 > 0 {
+                for task in allTasks! {
+                    sectionSnapshot.append([FolderHierarchy.task(task)], to: header)
+                }
+            }
+        }
+        
+        dataSource.apply(sectionSnapshot, to: .main, animatingDifferences: true, completion: nil)
     }
     
-    private func compositionalLayout() -> UICollectionViewLayout {
-        let insets: CGFloat = 12
-        var itemCount: Int
-        var itemSizeWidthDimension: NSCollectionLayoutDimension
-        var itemSize: NSCollectionLayoutSize
-        var groupSize: NSCollectionLayoutSize
-        let topSpace: CGFloat
+    func makeDataSource() -> UICollectionViewDiffableDataSource<Section, FolderHierarchy> {
+        let folderRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Folder> { cell, indexPath, item in
+            
+            var content = cell.defaultContentConfiguration()
+            content.text = item.name
+            content.image = UIImage(systemName: item.imageString ?? "list.bullet")!.withTintColor(UIColor(hex: item.colorHex!)!, renderingMode: .alwaysOriginal)
+            cell.contentConfiguration = content
+            if item.tasks?.count ?? 0 > 0 {
+                let headerDisclosureOption = UICellAccessory.OutlineDisclosureOptions(style: .header)
+                cell.accessories = [
+                    .delete(displayed: .whenEditing, actionHandler: {
+                        let ac = UIAlertController(title: "Delete Folder", message: "Are you sure you want to delete this folder? Deleting this folder will also delete all associated tasks. This action cannot be undone.", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "Cancel", style: .default))
+                        ac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+                            guard let self = self else { return }
+                            self.viewModel.deleteFolder(item)
+                        }))
+                        self.present(ac, animated: true)
+                    }),
+                    .outlineDisclosure(options:headerDisclosureOption)
+                ]
+            } else {
+                cell.accessories = [
+                    .delete(displayed: .whenEditing, actionHandler: {
+                        let ac = UIAlertController(title: "Delete Folder", message: "Are you sure you want to delete this folder? Deleting this folder will also delete all associated tasks. This action cannot be undone.", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "Cancel", style: .default))
+                        ac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+                            guard let self = self else { return }
+                            self.viewModel.deleteFolder(item)
+                        }))
+                        self.present(ac, animated: true)
+                    })
+                ]
+            }
+        }
         
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MainTask> { cell, indexPath, item in
+            
+            var content = cell.defaultContentConfiguration()
+            content.text = item.name
+            cell.indentationLevel = 2
+            cell.contentConfiguration = content
+        }
         
-        itemCount = 1
-        itemSizeWidthDimension = .fractionalWidth(1)
-        itemSize = NSCollectionLayoutSize(
-            widthDimension: itemSizeWidthDimension,
-            heightDimension: .absolute(52))
-        groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(96))
-        topSpace = .zero
-        
+        return UICollectionViewDiffableDataSource<Section, FolderHierarchy>(
+            collectionView: collectionView,
+            cellProvider: { collectionView, indexPath, item in
+                
+                switch item{
+                case .folder(let folderItem):
+                    /* LEAVING THIS HERE IN CASE I CHANGE MY MIND
+                     
+                     let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "folderCell", for: indexPath) as! FolderCollectionViewCell
+                     cell.folderName.text = folderItem.name
+                     let image = UIImage(systemName: folderItem.imageString ?? "list.bullet")
+                     cell.folderImage.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                     cell.folderImageBackground.backgroundColor = UIColor(hex: folderItem.colorHex ?? "9C80B5")
+                     cell.deleteButton.tag = indexPath.row
+                     cell.deleteButton.addTarget(self, action: #selector(self.deleteButtonTapped), for: .touchUpInside)
+                     if folderItem.tasks?.count != 0 {
+                     cell.hasSubTasks = true
+                     } else {
+                     cell.hasSubTasks = false
+                     }
+                     
+                     */
+                    let cell = collectionView.dequeueConfiguredReusableCell(
+                        using: folderRegistration,
+                        for: indexPath,
+                        item: folderItem)
+                    
+                    return cell
+                    
+                case .task(let taskItem):
+                    
+                    let cell = collectionView.dequeueConfiguredReusableCell(
+                        using: cellRegistration,
+                        for: indexPath,
+                        item: taskItem)
+                    
+                    return cell
+                }
+            })
+    }
+    
+    @objc
+    private func addButtonTapped() {
+        let addFolderVC = AddFolderViewController(viewModel: viewModel)
+        present(addFolderVC, animated: true)
+    }
+    
+    private func compositionalLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1/9))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitem: item,
-            count: itemCount)
-        group.interItemSpacing = .fixed(insets)
-        let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(
-                top: topSpace,
-                leading: insets,
-                bottom: 0,
-                trailing: insets)
-            section.interGroupSpacing = insets
-            return section
-        }
+            count: 1)
+        let section = NSCollectionLayoutSection(group: group)
         
-        return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
     
     @objc
@@ -122,27 +220,21 @@ class FolderViewController: UIViewController {
         }))
         present(ac, animated: true)
     }
-
-}
-
-extension FolderViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        folderList.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "folderCell", for: indexPath) as! FolderCollectionViewCell
-        cell.folderName.text = folderList[indexPath.row].name
-        let image = UIImage(data: folderList[indexPath.row].image!)
-        cell.folderImage.image = image
-        cell.deleteButton.tag = indexPath.row
-        cell.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        
-        return cell
-    }
 }
 
 extension FolderViewController: UICollectionViewDelegate {
-    
+    override func setEditing(_ editing: Bool, animated: Bool){
+        super.setEditing(editing, animated: animated)
+        
+        if editing {
+            collectionView.isEditing = true
+        } else {
+            collectionView.isEditing = false
+        }
+        
+        self.collectionView.reloadData()
+        
+    }
 }
 

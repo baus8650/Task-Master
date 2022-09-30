@@ -27,7 +27,7 @@ final class Folder_TestCase: XCTestCase {
 
     func testAddFolder() throws {
         let newFolder = FolderBuilder().build()
-        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        folderViewModel.addFolder(name: newFolder.name, imageString: newFolder.image, colorHexValue: newFolder.colorHexValue)
         let folders = folderViewModel.getFolders()
         XCTAssertEqual(folders?.count, 1)
         XCTAssertTrue(folders?.first?.name == "Test Folder")
@@ -35,7 +35,7 @@ final class Folder_TestCase: XCTestCase {
     
     func testDeleteFolder() throws {
         let newFolder = FolderBuilder().build()
-        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        folderViewModel.addFolder(name: newFolder.name, imageString: newFolder.image, colorHexValue: newFolder.colorHexValue)
         var folders = folderViewModel.getFolders()
         XCTAssertEqual(folders?.count, 1)
         
@@ -48,7 +48,7 @@ final class Folder_TestCase: XCTestCase {
     func testAddMainTask() throws {
         let newFolder = FolderBuilder().build()
         let newTask = MainTaskBuilder().build()
-        folderViewModel.addFolder(name: newFolder.name, image: newFolder.image!)
+        folderViewModel.addFolder(name: newFolder.name, imageString: newFolder.image, colorHexValue: newFolder.colorHexValue)
         let folders = folderViewModel.getFolders()
         let folder = folders?.first!
         XCTAssertEqual(folder?.tasks?.count, 0)
